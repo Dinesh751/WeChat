@@ -1,24 +1,51 @@
+'use client'
 import React from 'react'
+import  {useState, useEffect} from 'react';
+import  io  from 'socket.io-client';
+
+
 
 const Chat = () => {
+
+const [msg,setMsg]= useState("")
+const [socket , setSocket] = useState(null)
+
+
+  useEffect(() => {
+    const newSocket= io("http://localhost:8050");
+
+    setSocket(newSocket)
+
+    return ()=> socket.close()
+  }, []);
+
+
+
+const handleOnchange=(e)=>{
+    setMsg(e.target.value)
+}
+
+const handleOnClick=(e)=>{
+  e.preventDefault();
+  if(socket){
+    socket.emit('chat msg',msg)
+    setMsg('')
+  }
+  
+}
+
+
   return (
     <>
-    <form>
- <div stye={{display:"flex"}}>
 
- </div>
- <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-         <div class="sm:col-span-3">
-           
-             <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-           
-         </div>
- 
-  </div>
-        
-  
- </form>
- 
+    
+    <input type="text" placeholder="Enter Message"value={msg} onChange={handleOnchange}/>
+    <button type="submit"onClick={handleOnClick}>Send</button>
+
+   
+    
+
+
     
     </>
   )
