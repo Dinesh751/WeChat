@@ -10,8 +10,14 @@ dotenv.config();
 const app= express();
 
 
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: "*"
+ })
+ );
 app.use(express.json())
+
+
 
 app.get("/",(req,res)=>{
     res.status(200).send({
@@ -29,12 +35,20 @@ const io = new Server({
   });
 const socket = io.listen(server);
 
+const userSockerMap={};
+
 
 io.on('connection', (socket) => {
-  console.log("a is connected")
+  const userName=socket.handshake.query.userName;
+  console.log(" connected User :"+userName)
+  userSockerMap[userName]=socket;
     socket.on("chat msg",(msg)=>{
+      const receiveSocket=userSockerMap[msg.receiver]
       console.log(msg)
-      io.emit('chat msg',msg)
+      // socket.broadcast.emit('chat msg', msg);
+      if(receiveSocket){
+        receiveSocket.emit("chat msg",msg.textMessage);
+      }
     })
     
   });

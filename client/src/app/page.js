@@ -1,11 +1,13 @@
-import Image from "next/image";
-import Chat from "./Chat.jsx"
+
+
+import Auth from "./Auth.jsx";
 
 export default function Home() {
   return (
      <>
 
-     <Chat/>
+     
+     <Auth/>
      
      </>
   );
