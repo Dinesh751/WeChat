@@ -3,11 +3,16 @@ import dotenv from "dotenv";
 import http from  "http";
 import  {Server} from "socket.io"
 import cors from "cors"
+import connectToMongoDB from "./DB/connectToDB.js";
+import { addMsgToConversation } from "./controllers/conversation.controller.js";
+import chatRoute from "./router/chat.route.js"
 
 
 dotenv.config();
 
 const app= express();
+// connect to db
+connectToMongoDB();
 
 
 app.use(cors({
@@ -24,6 +29,7 @@ app.get("/",(req,res)=>{
         message:"Welcome... server is running "
     })
 })
+app.use("/v1/chat",chatRoute)
 
 const server = http.createServer(app)
 
@@ -49,6 +55,11 @@ io.on('connection', (socket) => {
       if(receiveSocket){
         receiveSocket.emit("chat msg",msg.textMessage);
       }
+      addMsgToConversation([msg.sender,msg.receiver],{
+        text:msg.textMessage,
+        sender:msg.sender,
+        receiver:msg.receiver
+      })
     })
     
   });
