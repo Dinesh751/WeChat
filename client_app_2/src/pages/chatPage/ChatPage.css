@@ -1,0 +1,109 @@
+*{
+    margin:0;
+    box-sizing: border-box;
+    
+}
+
+.wrapper{
+    display:grid;
+    grid-template-columns: 1fr 3fr;
+    position:fixed
+}
+.chat-users{
+    height:100vh;
+    background-color: rgb(243, 237, 237);
+   
+
+}
+.chat{
+    height:100vh;
+    position: relative;
+    padding:2rem;
+
+  
+}
+#scroll{
+    overflow-y: auto;
+    height:75vh;
+    display: flex;
+    padding:10px;
+    text-align: center;
+    flex-direction: column;
+    
+}
+
+.chat .text-box-container{
+    position: absolute;
+    bottom: 0;
+    width:90%;
+    height:15vh;
+    display:flex;
+    justify-content: center;
+
+}
+
+.chat .text-box-container form {
+    width:100%;
+    display:flex;
+    justify-content: center;
+    margin-top: 1rem;
+    text-wrap: wrap;
+}
+
+.chat .text-box-container  form .text-field{
+  height:2.5rem;
+  width:65%;
+  padding-left:2rem;
+  text-decoration: none;
+  border-radius: 0.5rem;
+}
+
+input[type=text]{
+    color:black;
+    border:1px solid rgb(107, 43, 245);
+}
+
+
+.chat .text-box-container  form  .send-btn{
+     background-color:rgba(106, 17, 203, 1) ;
+     margin-left: 10px;
+     height:2.5rem;
+     outline: none;
+     width:5rem;
+     border-radius: 0.5rem;
+     border:none;
+     text-wrap: wrap;
+}
+
+.chatSender{
+    margin-right: 0;
+    margin-left: auto;
+    margin-top:10px;
+    height:auto;
+    border-radius:  8px 0 8px 8px ;
+    padding:5px 20px;
+    background-color: rgb(135, 228, 240);
+    word-break: break-all;
+    display: block;
+    max-width:350px;
+    text-align: left
+    
+}
+.chatReceiver{
+    margin-left: 0;
+    margin-right: auto;
+    margin-top:10px;
+    height:auto;
+    border-radius:  0px 8px 8px 8px ;
+    padding:5px 20px;
+    background-color: rgb(110, 183, 121);
+    word-break: break-all;
+    display: block;
+    width:350px;
+    text-align: left;
+    
+    
+}
+
+
+

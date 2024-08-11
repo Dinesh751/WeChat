@@ -1,0 +1,91 @@
+.chatUserContainer{
+    margin:0;
+    width: 25vw;
+    box-sizing: border-box;
+    
+}
+.headerTitleContainer{
+    font-weight: 400;
+    color:#f0e7e7;
+    height:4rem;
+    background-color: rgba(106, 17, 203, 1);
+    padding:10px;
+    position: static;
+    width:inherit;
+}
+.chatGroupContainer{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    border-bottom: 0.5px solid rgba(106, 17, 203, 1);
+    
+}
+.chatUsers{
+    height:50px;
+    padding:10px;
+    cursor: pointer;
+   
+    
+}
+.groupUsers{
+    height:50px;
+    padding:10px;
+    cursor: pointer;
+ 
+}
+.containerUser{
+    height:79vh;
+    overflow-y: scroll;
+}
+.usersContainer{
+    height:4rem;
+    background-color:#FDFEFF;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    word-break: break-all;
+    border-radius: 6px;
+    
+}
+.active{
+    background-color:rgb(54, 51, 51);
+    color:white;
+}
+.usersContainer img{
+    border-radius: 50%;
+    max-width: 40px;
+    max-height: 40px;
+    margin-left:20px;
+}
+.usersContainer span{
+   margin-left:10px;
+}
+
+.footerContainer{
+    height:4rem;
+    position:fixed;
+    bottom: 0;
+    width: inherit;
+    display: flex;
+    align-items: center;
+    background-color: rgba(106, 17, 203, 1);
+}
+
+.footerContainer img{
+     border-radius: 50%;
+     margin:5px  0 5px 5px;
+     max-width: 50px;
+     max-height: 50px;
+
+}
+.footerContainer span{
+    margin-left: 15px;
+    color:white;
+
+}
+.logout-button{
+    background-color: inherit;
+    border: none;
+    margin:auto 15px auto auto;
+   
+}

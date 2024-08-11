@@ -1,0 +1,83 @@
+.loginForm {
+
+    
+    height:100vh;
+    /* fallback for old browsers */
+    background: #6a11cb;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1)rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+
+    display: flex;
+    justify-content: center;
+    align-items:flex-start;
+    word-wrap: break-word; 
+    }
+
+.container{
+    width:350px;
+    background-color: rgb(31, 29, 29);
+    color:aliceblue;
+    border-radius: 6px;
+    padding:20px;
+    margin-top:15vh;
+    /* border-radius: 20px; */
+}
+.container form .form-title{
+    text-align: center;
+    font-weight: 700;
+    color:#f0e7e7
+}
+.container form .form-group{
+    margin:15px;
+}
+.container form .form-control{
+    margin:5px;
+    outline: none;
+    
+}
+
+.container form  .form-button{
+    display: flex;
+    /* flex-direction: column; */
+   align-items: center;
+   justify-content: center;
+    gap:10px;
+    margin-top:30px;
+    margin-bottom: 50px;
+}
+
+.container form  .form-button .btn{
+    background-color: rgba(106, 17, 203, 1);
+    width:120px;
+    transition: .3s;
+    cursor: pointer;
+    text-transform: uppercase;
+    color:black;
+    
+}
+
+.container form  .form-button .btn:hover{
+    background-color: rgba(37, 117, 252, 1);
+    
+}
+
+
+
+@media only screen and (max-width: 350px) {
+    .container{
+        width:200px;
+        
+    }
+    .container form .form-button{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+    }
+    
+}
