@@ -1,72 +1,55 @@
 import dotenv from "dotenv"
-import Redis from 'ioredis'
+import { createClient } from 'redis';
 
 dotenv.config()
 
-
-// Create a Redis instance for subscribing
-const subscriber = new Redis({
- host: process.env.REDIS_HOST,
- port: process.env.REDIS_PORT,
- password: process.env.REDIS_PWD,
- username: process.env.REDIS_USER,
- tls: {}
+// Create a Redis client
+const client = createClient({
+  username: process.env.REDIS_USER,
+  password: process.env.REDIS_PWD,
+  socket: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+  },
 });
 
-// Create a Redis instance for publishing
-const publisher = new Redis({
- host: process.env.REDIS_HOST,
- port: process.env.REDIS_PORT,
- password: process.env.REDIS_PWD,
- username: process.env.REDIS_USER,
- tls: {}
-});
+client.on('error', (err) => console.log('Redis Client Error', err));
+client.on('connect', () => console.log('Redis Client Connected Successfully'));
 
-// When a message is published to a specific channel,
-// all subscribers that are listening to that channel
-// receive a copy of the message.
-// Channels provide a way to categorize messages and allow
-// subscribers to selectively listen for messages they are interested in.
+await client.connect();
 
+// Create duplicate clients for Pub/Sub
+const subscriber = client.duplicate();
+const publisher = client.duplicate();
+
+await subscriber.connect();
+await publisher.connect();
+
+// Function to subscribe to a Redis channel
 export function subscribe(channel, callback) {
-  subscriber.subscribe(channel, (err, count) => {
-    if (err) {
-      console.error('Error subscribing to channel:', err);
-      return;
-    }
-    console.log(`Subscribed to ${channel}`);
+  subscriber.subscribe(channel, (message) => {
+    console.log(`Received message on ${channel}: ${message}`);
+    callback(message);
   });
- 
-  // When a message is received on any subscribed channel,
-  // it checks if the channel matches the specified channel and
-  // calls the provided callback function with the received message
- 
-  subscriber.on('message', (subscribedChannel, message) => {
-    console.log('Subscriber ', subscribedChannel, ' has received msg ', message);
-    if (subscribedChannel === channel) {
-      callback(message);
-    }
-  });
- }
- 
+}
+
 // Function to unsubscribe from a Redis channel
 export function unsubscribe(channel) {
-  subscriber.unsubscribe(channel, (err, count) => {
+  subscriber.unsubscribe(channel, (err) => {
     if (err) {
       console.error('Error unsubscribing from channel:', err);
       return;
     }
     console.log(`Unsubscribed from ${channel}`);
   });
- }
- 
- // Function to publish a message to a Redis channel
- export async function publish(channel, message) {
+}
+
+// Function to publish a message to a Redis channel
+export async function publish(channel, message) {
   try {
     await publisher.publish(channel, message);
     console.log(`Published message to ${channel}: ${message}`);
   } catch (error) {
     console.error('Error publishing message:', error);
   }
- }
- 
+}

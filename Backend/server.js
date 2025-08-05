@@ -35,50 +35,57 @@ app.use("/v1/chat",chatRoute)
 
 const server = http.createServer(app)
 
-const io = new Server({
+const io = new Server(server, {
     cors: {
-      allowedHeaders:['*'],
-      origin: "*"
-    }
-  });
+        allowedHeaders: ['*'],
+        origin: "*"
+    },
+    pingTimeout: 60000, // 60 seconds timeout for inactivity
+    pingInterval: 25000, // Send a ping every 25 seconds
+});
 const socket = io.listen(server);
 
 const userSocketMap={};
 
 
 io.on('connection', (socket) => {
-  const userName=socket.handshake.query.userName;
-  console.log(" connected User :"+userName)
-  userSocketMap[userName]=socket;
+  const userName = socket.handshake.query.userName;
+  console.log("Connected User:", userName);
 
-  const channelName = `chat_${userName}`
- subscribe(channelName, (msg) => {
-   socket.emit("chat msg", JSON.parse(msg));
- });
+  // Add user to the map
+  userSocketMap[userName] = socket;
 
-    socket.on("chat msg",(msg)=>{
-      const receiverSocket=userSocketMap[msg.receiver]
-    
-      // socket.broadcast.emit('chat msg', msg);
-      if (receiverSocket) {
-        receiverSocket.emit('chat msg', msg);
-      } else {
-        const channelName = `chat_${msg.receiver}`
-        publish(channelName, JSON.stringify(msg));
-      }
-   
-      addMsgToConversation([msg.sender,msg.receiver],{
-        text:msg.text,
-        sender:msg.sender,
-        receiver:msg.receiver
-      })
-    })
-    
+  const channelName = `chat_${userName}`;
+  subscribe(channelName, (msg) => {
+    socket.emit("chat msg", JSON.parse(msg));
   });
 
+  socket.on("chat msg", (msg) => {
+    const receiverSocket = userSocketMap[msg.receiver];
+
+    if (receiverSocket && receiverSocket.connected) {
+        console.log(`Sending message to ${msg.receiver}`);
+        receiverSocket.emit('chat msg', msg);
+    } else {
+        console.log(`Receiver ${msg.receiver} is not connected`);
+        const channelName = `chat_${msg.receiver}`;
+        publish(channelName, JSON.stringify(msg));
+    }
+});
+
+  // Handle user disconnection
+  socket.on('disconnect', () => {
+    console.log(`User disconnected: ${userName}`);
+    delete userSocketMap[userName];
+  });
+
+  socket.on('heartbeat', () => {
+    console.log(`Heartbeat received from ${userName}`);
+});
+});
 
 
-const PORT=process.env.PORT || 5000;
+const PORT=process.env.PORT || 8001;
 
 server.listen(PORT, () => {
     console.log(`Server is Listening On Port ${PORT}`);

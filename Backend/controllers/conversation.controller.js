@@ -1,4 +1,3 @@
-
 import conversation from "../models/chat.model.js";
 
 
@@ -48,4 +47,34 @@ export const addMsgToConversation=async (participants,msg)=>{
        })
     }
 }
+
+export const saveChatController = async (req, res) => {
+  try {
+    const { sender, receiver, text } = req.body;
+
+
+    if (!sender || !receiver || !text) {
+      return res.status(400).send({
+        message: "Invalid data provided",
+        success: false,
+      });
+    }
+
+    const participants = [sender, receiver];
+    const msg = { sender, text, receiver };
+
+    await addMsgToConversation(participants, msg);
+
+    return res.status(200).send({
+      message: "Message saved successfully",
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: "Failed to save the message",
+      success: false,
+    });
+  }
+};
 

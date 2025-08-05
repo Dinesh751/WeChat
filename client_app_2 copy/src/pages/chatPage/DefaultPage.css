@@ -1,0 +1,47 @@
+/* DefaultPage.css */
+
+.default-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  background: #fff; /* Changed background to white */
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+.default-page-content {
+  max-width: 600px;
+  padding: 20px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc); /* Inner card retains purple gradient */
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.default-page-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.default-page-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.default-page-svg {
+  margin-top: 20px;
+}
+
+.default-page-svg svg {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
